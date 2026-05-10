@@ -81,7 +81,7 @@ function sanitizeHeaders(h: unknown): Record<string, string> {
   return out;
 }
 
-Deno.serve(async (req: Request) => {
+export default async function (req: Request): Promise<Response> {
   // Fail closed on the placeholder PSK so a fresh deploy without setup
   // can't accidentally serve as an open relay.
   if (PSK === "CHANGE_ME_TO_A_STRONG_SECRET") {
@@ -172,4 +172,4 @@ Deno.serve(async (req: Request) => {
     const message = err instanceof Error ? err.message : String(err);
     return Response.json({ e: message }, { status: 500 });
   }
-});
+}
