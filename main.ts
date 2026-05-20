@@ -37,7 +37,7 @@
 // of an offline exit node is that ChatGPT/Claude/Grok stop working;
 // other sites are unaffected.
 
-const PSK = "583cc900-0de6-4e20-899e-2a0908656cfa";
+const PSK = "fa99c029-fc45-4345-8ce0-20ce995c482a";
 
 // Headers the client may send that must NOT be forwarded to the
 // destination — they're hop-by-hop or would break re-encoding.
@@ -81,7 +81,7 @@ function sanitizeHeaders(h: unknown): Record<string, string> {
   return out;
 }
 
-export default async function (req: Request): Promise<Response> {
+export async function handleExitNodeRequest(req: Request): Promise<Response> {
   // Fail closed on the placeholder PSK so a fresh deploy without setup
   // can't accidentally serve as an open relay.
   if (PSK === "CHANGE_ME_TO_A_STRONG_SECRET") {
@@ -173,3 +173,7 @@ export default async function (req: Request): Promise<Response> {
     return Response.json({ e: message }, { status: 500 });
   }
 }
+
+export default {
+  fetch: handleExitNodeRequest,
+};
